@@ -12,7 +12,6 @@ Future<List<Phone>> fetchPhones(String? filter) async {
   if (listResponse.statusCode == 200) {
     final List<dynamic> data = jsonDecode(listResponse.body) as List<dynamic>;
 
-    // Mapeia a lista de mapas para a lista de objetos Phone
     return data
         .map((item) => Phone.fromJson(item as Map<String, dynamic>))
         .toList();

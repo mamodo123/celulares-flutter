@@ -39,7 +39,6 @@ class ChangeNameDialog extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              // Fechar o diálogo
               child: const Text('Cancelar'),
             ),
             MyAppButton(
@@ -75,7 +74,6 @@ class ChangeNameDialog extends StatelessWidget {
       } finally {
         setLoading(false);
       }
-      // Navigator.of(context).pop();
     }
   }
 }

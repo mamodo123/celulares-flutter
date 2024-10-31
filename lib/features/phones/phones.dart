@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:phones/features/phones/models/phone.dart';
+import 'package:phones/features/phones/phoneList.dart';
 
-import '../../values/consts.dart';
 import 'functions.dart';
+
+enum SortCriteria { price, name }
 
 class PhonesScreen extends StatefulWidget {
   final String? filter;
@@ -15,11 +17,23 @@ class PhonesScreen extends StatefulWidget {
 
 class _PhonesScreenState extends State<PhonesScreen> {
   late Future<List<Phone>> phonesWithDetailsFuture;
+  SortCriteria? selectedCriteria;
 
   @override
   void initState() {
     phonesWithDetailsFuture = fetchPhones(widget.filter);
+    selectedCriteria = SortCriteria.name;
     super.initState();
+  }
+
+  Future<List<Phone>> sortPhones(List<Phone> phones) async {
+    if (selectedCriteria == SortCriteria.price) {
+      phones.sort(
+          (a, b) => (double.parse(a.valor) - double.parse(b.valor)).toInt());
+    } else if (selectedCriteria == SortCriteria.name) {
+      phones.sort((a, b) => a.nome.compareTo(b.nome));
+    }
+    return phones;
   }
 
   @override
@@ -37,63 +51,62 @@ class _PhonesScreenState extends State<PhonesScreen> {
           if (data == null) {
             return Container();
           }
-          return data.isEmpty
-              ? const Center(
-                  child: Text('Nenhum item encontrado'),
-                )
-              : ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    final phone = data[index];
-                    return GestureDetector(
-                      onTap: () => openPhone(phone),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      phone.nome,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
-                                    ),
-                                    Text(phone.descricao.isEmpty
-                                        ? 'Sem descrição'
-                                        : phone.descricao.length > 50
-                                            ? '${phone.descricao.substring(0, 50)}...'
-                                            : phone.descricao),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Image.network(
-                                    '$imagesUrl${phone.destaque}',
-                                    height: 100,
-                                    errorBuilder: (BuildContext context,
-                                        Object error, StackTrace? stackTrace) {
-                                      return Container(
-                                        width: 100,
-                                        height: 100,
-                                        color: Colors.white,
-                                        child: const Placeholder(),
-                                      );
-                                    },
-                                  ),
-                                  Text('\$${phone.valor}'),
-                                ],
-                              )
-                            ],
+
+          if (data.isEmpty) {
+            return const Center(
+              child: Text('Nenhum item encontrado'),
+            );
+          } else {
+            return Column(
+              children: [
+                SizedBox(
+                  height: 30,
+                  child: Row(
+                    children: [
+                      const Text('Ordenação:'),
+                      const Spacer(),
+                      DropdownButton<SortCriteria>(
+                        value: selectedCriteria,
+                        items: const [
+                          DropdownMenuItem(
+                            value: SortCriteria.price,
+                            child: Text('Preço'),
                           ),
-                        ),
+                          DropdownMenuItem(
+                            value: SortCriteria.name,
+                            child: Text('Nome'),
+                          ),
+                        ],
+                        onChanged: (SortCriteria? newValue) {
+                          setState(() {
+                            selectedCriteria = newValue;
+                          });
+                          phonesWithDetailsFuture =
+                              Future.value(sortPhones(data));
+                        },
                       ),
-                    );
-                  });
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: FutureBuilder<List<Phone>>(
+                    future: sortPhones(data),
+                    builder: (context, sortedSnapshot) {
+                      if (sortedSnapshot.connectionState ==
+                          ConnectionState.done) {
+                        final sortedData = sortedSnapshot.data ?? [];
+                        return PhoneList(phones: sortedData);
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
         } else if (snapshot.error != null) {
           return Center(
               child: Text('Erro inesperado: \n${snapshot.error.toString()}'));
@@ -104,9 +117,5 @@ class _PhonesScreenState extends State<PhonesScreen> {
         }
       },
     );
-  }
-
-  void openPhone(Phone phone) {
-    Navigator.of(context).pushNamed('/home/phone', arguments: phone);
   }
 }

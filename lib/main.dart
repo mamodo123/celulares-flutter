@@ -10,7 +10,7 @@ import 'features/login/login.dart';
 import 'features/login/register.dart';
 import 'features/phones/phone.dart';
 import 'features/providers/info.dart';
-import 'firebase_options.dart'; // A importação do arquivo com as constantes
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

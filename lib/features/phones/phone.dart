@@ -19,7 +19,7 @@ class PhoneScreen extends StatelessWidget {
           child: Column(
             children: [
               CarouselSlider.builder(
-                itemCount: phone.images.length,
+                itemCount: phone.images.isEmpty ? 1 : phone.images.length,
                 itemBuilder:
                     (BuildContext context, int itemIndex, int pageViewIndex) =>
                         Container(
@@ -37,7 +37,7 @@ class PhoneScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      '$imagesUrl${phone.images[itemIndex]}',
+                      '$imagesUrl${phone.images.isEmpty ? phone.destaque : phone.images[itemIndex]}',
                       fit: BoxFit.cover,
                       width: double.infinity,
                       errorBuilder: (BuildContext context, Object error,
