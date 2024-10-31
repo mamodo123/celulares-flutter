@@ -8,6 +8,7 @@ final ThemeData appThemeData = ThemeData(
   ).copyWith(
     primary: Colors.deepPurple,
     secondary: Colors.deepPurpleAccent,
+    background: const Color(0xFFF3E5F5),
     surface: const Color(0xFFF3E5F5),
     onPrimary: Colors.white,
     onSecondary: Colors.white,
@@ -31,6 +32,7 @@ final ThemeData appThemeData = ThemeData(
   appBarTheme: const AppBarTheme(
     color: Colors.deepPurple,
     titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+    iconTheme: IconThemeData(color: Colors.white),  // Ícone de voltar em branco
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Colors.deepPurple,
