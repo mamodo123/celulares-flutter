@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "266908545911",
+    "project_id": "coins-d394b",
+    "storage_bucket": "coins-d394b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266908545911:android:257628172dbd9c372e6772",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1ZNB9GmX0q1g78du43cmtiFV_G21k6-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266908545911:android:63a56e4fe524d4792e6772",
+        "android_client_info": {
+          "package_name": "com.example.phones"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1ZNB9GmX0q1g78du43cmtiFV_G21k6-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
