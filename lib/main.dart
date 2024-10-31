@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:phones/features/phones/models/phone.dart';
 import 'package:phones/values/consts.dart';
+import 'package:phones/values/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'features/home/home.dart';
@@ -22,9 +23,9 @@ void main() async {
     create: (context) => Info(),
     child: MaterialApp(
       title: appName,
+      theme: appThemeData,
       initialRoute: '/',
       onGenerateRoute: (RouteSettings settings) {
-        final args = settings.arguments;
 
         switch (settings.name) {
           case '/login':
